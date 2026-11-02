@@ -76,8 +76,6 @@ begin
     lQry.SQL.Add('values');
     lQry.SQL.Add(' (:numero_pedido, :codigo_produto, :quantidade, :vlr_unitario, :vlr_total)');
 
-    lQry.Prepare;
-
     for I := 0 to APedido.Itens.Count - 1 do
       begin
         Item := TPedidoItem(APedido.Itens[I]);

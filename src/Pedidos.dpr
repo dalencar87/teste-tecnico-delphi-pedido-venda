@@ -10,7 +10,8 @@ uses
   uPedido in 'model\uPedido.pas',
   uClienteRepository in 'repository\uClienteRepository.pas',
   uProdutoRepository in 'repository\uProdutoRepository.pas',
-  uPedidoRepository in 'repository\uPedidoRepository.pas';
+  uPedidoRepository in 'repository\uPedidoRepository.pas',
+  uPedidoService in 'service\uPedidoService.pas';
 
 {$R *.res}
 

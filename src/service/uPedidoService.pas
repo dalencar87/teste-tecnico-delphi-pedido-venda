@@ -19,6 +19,7 @@ type
     FPedidoRepository: IPedidoRepository;
     procedure ValidarPedido(APedido: TPedido);
   public
+    constructor Create; overload;
     constructor Create(
       AClienteRepository: IClienteRepository;
       AProdutoRepository: IProdutoRepository;
@@ -66,6 +67,14 @@ begin
   Result := FProdutoRepository.BuscarPorCodigo(ACodigo);
   if not Assigned(Result) then
     raise Exception.Create(Format('Produto %d não encontrado.', [ACodigo]));
+end;
+
+constructor TPedidoService.Create;
+begin
+  Create(
+    TClienteRepository.Create,
+    TProdutoRepository.Create,
+    TPedidoRepository.Create);
 end;
 
 procedure TPedidoService.ValidarPedido(APedido: TPedido);
