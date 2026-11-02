@@ -81,3 +81,5 @@ __recovery/
 # Outros
 *.ini
 *.fdb
+/*.log
+/src/*.res
