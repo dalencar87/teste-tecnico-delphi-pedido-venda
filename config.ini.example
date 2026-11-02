@@ -1,0 +1,7 @@
+[Database]
+Database=pedido.fdb
+Username=
+Password=
+Server=
+Port=
+ClientLibrary=fbclient.dll

@@ -1,0 +1,25 @@
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (1,  'João da Silva Comércio Ltda',   'Foz do Iguaçu',  'PR');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (2,  'Maria Oliveira Souza',          'Curitiba',       'PR');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (3,  'Mercado Bom Preço',             'Cascavel',       'PR');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (4,  'Carlos Eduardo Pereira',        'São Paulo',      'SP');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (5,  'Distribuidora Paraná Sul',      'Londrina',       'PR');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (6,  'Ana Paula Gonçalves',           'Florianópolis',  'SC');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (7,  'Supermercado Estrela',          'Porto Alegre',   'RS');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (8,  'Ricardo Almeida Costa',         'Campo Grande',   'MS');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (9,  'Padaria Pão Quente',            'Maringá',        'PR');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (10, 'Fernanda Lima Rodrigues',       'Belo Horizonte', 'MG');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (11, 'Atacado Três Fronteiras',       'Foz do Iguaçu',  'PR');
+INSERT INTO CLIENTE (CODIGO, NOME, CIDADE, UF) VALUES (12, 'Lucas Martins Ferreira',        'Rio de Janeiro', 'RJ');
+ 
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (1,  'Arroz Tipo 1 5kg',               27.90);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (2,  'Feijão Carioca 1kg',              8.49);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (3,  'Açúcar Refinado 1kg',             4.99);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (4,  'Café Torrado e Moído 500g',      18.75);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (5,  'Óleo de Soja 900ml',              7.29);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (6,  'Leite Integral 1L',               5.39);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (7,  'Macarrão Espaguete 500g',         4.15);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (8,  'Farinha de Trigo 1kg',            5.89);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (9,  'Sabão em Pó 1,6kg',              22.40);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (10, 'Detergente Líquido 500ml',        2.79);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (11, 'Papel Higiênico 12 rolos',       19.90);
+INSERT INTO PRODUTO (CODIGO, DESCRICAO, PRECO_VENDA) VALUES (12, 'Refrigerante Cola 2L',            9.99);
