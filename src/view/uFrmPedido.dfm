@@ -78,7 +78,6 @@ object frmPedido: TfrmPedido
       Height = 25
       Caption = 'Carregar'
       TabOrder = 2
-      OnClick = btnCarregarClick
     end
     object btnCancelar: TButton
       Left = 359
@@ -225,8 +224,7 @@ object frmPedido: TfrmPedido
       Top = 41
       Width = 100
       Height = 21
-      MaxLength = 5
-      NumbersOnly = True
+      MaxLength = 10
       TabOrder = 2
     end
     object edtValorUnitario: TEdit
@@ -234,8 +232,7 @@ object frmPedido: TfrmPedido
       Top = 41
       Width = 100
       Height = 21
-      MaxLength = 5
-      NumbersOnly = True
+      MaxLength = 10
       TabOrder = 3
     end
     object btnAdicionar: TButton
@@ -243,7 +240,7 @@ object frmPedido: TfrmPedido
       Top = 39
       Width = 75
       Height = 25
-      Caption = 'Adicionar'
+      Caption = 'Inserir'
       TabOrder = 4
       OnClick = btnAdicionarClick
     end
@@ -257,18 +254,19 @@ object frmPedido: TfrmPedido
     Align = alTop
     Caption = 'Itens do Pedido'
     TabOrder = 4
-    object gridItens: TDBGrid
+    object gridItens: TStringGrid
       Left = 2
       Top = 15
       Width = 728
       Height = 202
       Align = alClient
+      ColCount = 5
+      DefaultRowHeight = 20
+      FixedCols = 0
+      RowCount = 2
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRowSelect]
       TabOrder = 0
-      TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clWindowText
-      TitleFont.Height = -11
-      TitleFont.Name = 'Tahoma'
-      TitleFont.Style = []
+      OnKeyDown = gridItensKeyDown
     end
   end
   object pnlTotais: TPanel
@@ -281,6 +279,19 @@ object frmPedido: TfrmPedido
     BevelOuter = bvNone
     TabOrder = 5
     ExplicitHeight = 70
+    object lblTotal: TLabel
+      Left = 16
+      Top = 8
+      Width = 117
+      Height = 19
+      Caption = 'Total: R$ 0,00'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
     object btnGravar: TButton
       Left = 615
       Top = 0
