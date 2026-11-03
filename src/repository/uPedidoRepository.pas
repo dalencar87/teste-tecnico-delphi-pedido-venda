@@ -46,7 +46,7 @@ begin
   try
     lQry.Connection := TConexao.Instance.GetConnection;
 
-    lQry.SQL.Add('select p.numero_pedido, p.data_emissao, p.codigo_cliente,');
+    lQry.SQL.Add('select p.numero_pedido, p.data_emissao, p.codigo_cliente, p.observacao,');
     lQry.SQL.Add('       c.nome, c.cidade, c.uf');
     lQry.SQL.Add('  from pedido p');
     lQry.SQL.Add(' inner join cliente c on c.codigo = p.codigo_cliente');
@@ -62,6 +62,7 @@ begin
     try
       Result.Numero := lQry.FieldByName('numero_pedido').AsInteger;
       Result.DataEmissao := lQry.FieldByName('data_emissao').AsDateTime;
+      Result.Observacao := lQry.FieldByName('observacao').AsString;
       Result.Cliente.Codigo := lQry.FieldByName('codigo_cliente').AsInteger;
       Result.Cliente.Nome := lQry.FieldByName('nome').AsString;
       Result.Cliente.Cidade := lQry.FieldByName('cidade').AsString;
@@ -148,14 +149,15 @@ begin
     lQry.Connection := TConexao.Instance.GetConnection;
 
     lQry.SQL.Add('insert into pedido');
-    lQry.SQL.Add(' (data_emissao, codigo_cliente, valor_total)');
+    lQry.SQL.Add(' (data_emissao, codigo_cliente, valor_total, observacao)');
     lQry.SQL.Add('values');
-    lQry.SQL.Add(' (:data_emissao, :codigo_cliente, :valor_total)');
+    lQry.SQL.Add(' (:data_emissao, :codigo_cliente, :valor_total, :observacao)');
     lQry.SQL.Add('returning numero_pedido');
 
     lQry.ParamByName('data_emissao').AsDateTime := APedido.DataEmissao;
     lQry.ParamByName('codigo_cliente').AsInteger := APedido.Cliente.Codigo;
     lQry.ParamByName('valor_total').AsCurrency := APedido.ValorTotal;
+    lQry.ParamByName('observacao').AsString := Trim(APedido.Observacao);
 
     lQry.Open;
     Result := lQry.FieldByName('numero_pedido').AsInteger;

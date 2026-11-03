@@ -14,6 +14,7 @@ type
     FNumero: Integer;
     FDataEmissao: TDateTime;
     FCliente: TCliente;
+    FObservacao: string;
     FItens: TObjectList;
     procedure ValidarIndice(AIndex: Integer);
     procedure ValidarValores(AQuantidade, AVlrUnitario: Currency);
@@ -31,6 +32,7 @@ type
     property Numero: Integer read FNumero write FNumero;
     property DataEmissao: TDateTime read FDataEmissao write FDataEmissao;
     property Cliente: TCliente read FCliente write FCliente;
+    property Observacao: string read FObservacao write FObservacao;
     property Itens: TObjectList read FItens write FItens;
   end;
 

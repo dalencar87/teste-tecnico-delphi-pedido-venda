@@ -44,6 +44,8 @@ type
     btnGravar: TButton;
     btnAdicionar: TButton;
     lblTotal: TLabel;
+    lblObservacao: TLabel;
+    edtObservacao: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -186,6 +188,8 @@ begin
 
   if FPedido.Numero = 0 then
     FPedido.DataEmissao := Now;
+
+  FPedido.Observacao := Trim(edtObservacao.Text);
 
   try
     lNumero := FService.Gravar(FPedido);
@@ -382,6 +386,7 @@ begin
   grpCliente.Enabled := not EmConsulta;
   grpProduto.Enabled := not EmConsulta;
   btnGravar.Enabled := not EmConsulta;
+  edtObservacao.ReadOnly := EmConsulta;
 end;
 
 procedure TfrmPedido.ConfigurarGrid;
@@ -468,6 +473,7 @@ procedure TfrmPedido.ExibirPedido;
 begin
   edtNumero.Text := IntToStr(FPedido.Numero);
   edtDataEmissao.Text := FormatDateTime('dd/mm/yyyy hh:nn', FPedido.DataEmissao);
+  edtObservacao.Text := FPedido.Observacao;
 
   edtCodCliente.Text := IntToStr(FPedido.Cliente.Codigo);
   edtNomeCliente.Text := FPedido.Cliente.Nome;
@@ -548,6 +554,7 @@ begin
 
   edtNumero.Clear;
   edtDataEmissao.Clear;
+  edtObservacao.Clear;
   LimparCliente;
   LimparProduto;
   AtualizarGrid;

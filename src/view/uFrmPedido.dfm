@@ -88,6 +88,21 @@ object frmPedido: TfrmPedido
       TabOrder = 3
       OnClick = btnCancelarClick
     end
+    object lblObservacao: TLabel
+      Left = 440
+      Top = 24
+      Width = 58
+      Height = 13
+      Caption = 'Observa'#231#227'o'
+    end
+    object edtObservacao: TEdit
+      Left = 440
+      Top = 43
+      Width = 280
+      Height = 21
+      MaxLength = 200
+      TabOrder = 4
+    end
   end
   object grpCliente: TGroupBox
     AlignWithMargins = True
