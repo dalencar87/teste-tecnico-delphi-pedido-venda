@@ -1,8 +1,9 @@
-unit uPedidoService;
+﻿unit uPedidoService;
 
 interface
 
 uses
+  System.SysUtils,
   FireDAC.Comp.Client,
   uCliente,
   uProduto,
@@ -28,12 +29,13 @@ type
     function BuscarCliente(ACodigo: Integer): TCliente;
     function BuscarProduto(ACodigo: Integer): TProduto;
     function Gravar(APedido: TPedido): Integer;
+    function CarregarPedido(ANumeroPedido: Integer): TPedido;
+    procedure CancelarPedido(ANumeroPedido: Integer);
   end;
 
 implementation
 
 uses
-  System.SysUtils,
   uConexao;
 
 { TPedidoService }
@@ -52,21 +54,48 @@ end;
 function TPedidoService.BuscarCliente(ACodigo: Integer): TCliente;
 begin
   if ACodigo <= 0 then
-    raise Exception.Create('Informe um c�digo de cliente v�lido.');
+    raise Exception.Create('Informe um código de cliente válido.');
 
   Result := FClienteRepository.BuscarPorCodigo(ACodigo);
   if not Assigned(Result) then
-    raise Exception.Create(Format('Cliente %d n�o encontrado.', [ACodigo]));
+    raise Exception.Create(Format('Cliente %d não encontrado.', [ACodigo]));
 end;
 
 function TPedidoService.BuscarProduto(ACodigo: Integer): TProduto;
 begin
   if ACodigo <= 0 then
-    raise Exception.Create('Informe um c�digo de produto v�lido.');
+    raise Exception.Create('Informe um código de produto válido.');
 
   Result := FProdutoRepository.BuscarPorCodigo(ACodigo);
   if not Assigned(Result) then
-    raise Exception.Create(Format('Produto %d n�o encontrado.', [ACodigo]));
+    raise Exception.Create(Format('Produto %d não encontrado.', [ACodigo]));
+end;
+
+procedure TPedidoService.CancelarPedido(ANumeroPedido: Integer);
+begin
+  if ANumeroPedido <= 0 then
+    raise Exception.Create('Informe um número de pedido válido.');
+
+  TConexao.Instance.GetConnection.StartTransaction;
+  try
+    if not FPedidoRepository.Excluir(ANumeroPedido) then
+      raise Exception.Create(Format('Pedido %d não encontrado.', [ANumeroPedido]));
+
+    TConexao.Instance.GetConnection.Commit;
+  except
+    TConexao.Instance.GetConnection.Rollback;
+    raise;
+  end;
+end;
+
+function TPedidoService.CarregarPedido(ANumeroPedido: Integer): TPedido;
+begin
+  if ANumeroPedido <= 0 then
+    raise Exception.Create('Informe um número de pedido válido.');
+
+  Result := FPedidoRepository.Carregar(ANumeroPedido);
+  if not Assigned(Result) then
+    raise Exception.Create(Format('Pedido %d não encontrado.', [ANumeroPedido]));
 end;
 
 constructor TPedidoService.Create;
@@ -80,7 +109,10 @@ end;
 procedure TPedidoService.ValidarPedido(APedido: TPedido);
 begin
   if not Assigned(APedido) then
-    raise Exception.Create('Pedido n�o informado.');
+    raise Exception.Create('Pedido não informado.');
+
+  if APedido.Numero > 0 then
+    raise Exception.Create(Format('O pedido %d já está gravado.', [APedido.Numero]));
 
   if APedido.Cliente.Codigo <= 0 then
     raise Exception.Create('Informe o cliente do pedido.');

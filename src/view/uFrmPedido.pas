@@ -52,6 +52,8 @@ type
     procedure btnAdicionarClick(Sender: TObject);
     procedure btnGravarClick(Sender: TObject);
     procedure gridItensKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btnCarregarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
   private
     FService: TPedidoService;
     FPedido: TPedido;
@@ -64,6 +66,9 @@ type
     procedure EditarItem;
     procedure ExcluirItem;
     procedure NovoPedido;
+    procedure ExibirPedido;
+    procedure AtualizarModoTela;
+    function EmConsulta: Boolean;
   public
     procedure BuscarPedido;
     procedure BuscarCliente;
@@ -177,12 +182,19 @@ begin
       Exit;
     end;
 
+  lNumero := 0;
+
   if FPedido.Numero = 0 then
     FPedido.DataEmissao := Now;
 
   try
     lNumero := FService.Gravar(FPedido);
   except
+    on E: Exception do
+      begin
+        ShowMessage(E.Message);
+        Exit;
+      end;
     on E: Exception do
       begin
         ShowMessage('Não foi possível gravar o pedido: ' + E.Message);
@@ -209,6 +221,7 @@ begin
     end;
 
   lCodigo := StrToIntDef(Trim(edtCodCliente.Text), 0);
+  lCliente := nil;
 
   if (lCodigo > 0) and (lCodigo = FPedido.Cliente.Codigo) then
     Exit;
@@ -238,8 +251,39 @@ begin
 end;
 
 procedure TfrmPedido.BuscarPedido;
+var
+  lNumero: Integer;
+  lPedido: TPedido;
 begin
+  lNumero := StrToIntDef(Trim(edtNumero.Text), 0);
+  lPedido := nil;
 
+  if lNumero <= 0 then
+    begin
+      ShowMessage('Informe o número do pedido.');
+      edtNumero.SetFocus;
+      Exit;
+    end;
+
+  if (not EmConsulta) and (FPedido.Itens.Count > 0) and
+    (MessageDlg('O pedido atual não foi gravado e será descartado. Deseja continuar?',
+      mtConfirmation, [mbYes, mbNo], 0) <> mrYes) then
+    Exit;
+
+  try
+    lPedido := FService.CarregarPedido(lNumero);
+  except
+    on E: Exception do
+      begin
+        ShowMessage(E.Message);
+        edtNumero.SetFocus;
+        Exit;
+      end;
+  end;
+
+  FreeAndNil(FPedido);
+  FPedido := lPedido;
+  ExibirPedido;
 end;
 
 procedure TfrmPedido.BuscarProduto;
@@ -257,6 +301,7 @@ begin
     end;
 
   lCodigo := StrToIntDef(Trim(edtCodProduto.Text), 0);
+  lProduto := nil;
 
   try
     lProduto := FService.BuscarProduto(lCodigo);
@@ -284,6 +329,61 @@ begin
   end;
 end;
 
+procedure TfrmPedido.btnCancelarClick(Sender: TObject);
+var
+  lNumero: Integer;
+begin
+  if EmConsulta then
+    lNumero := FPedido.Numero
+  else
+    lNumero := StrToIntDef(Trim(edtNumero.Text), 0);
+
+  if lNumero <= 0 then
+    begin
+      ShowMessage('Carregue ou informe o número do pedido a cancelar.');
+      edtNumero.SetFocus;
+      Exit;
+    end;
+
+  if MessageDlg(Format('Confirma o cancelamento do pedido %d?', [lNumero]),
+    mtWarning, [mbYes, mbNo], 0) <> mrYes then
+    Exit;
+
+  try
+    FService.CancelarPedido(lNumero);
+  except
+    on E: Exception do
+      begin
+        ShowMessage(E.Message);
+        Exit;
+      end;
+    on E: Exception do
+      begin
+        ShowMessage('Não foi possível cancelar o pedido: ' + E.Message);
+        Exit;
+      end;
+  end;
+
+  ShowMessage(Format('Pedido %d cancelado com sucesso.', [lNumero]));
+
+  if FPedido.Numero = lNumero then
+    NovoPedido
+  else
+    edtNumero.Clear;
+end;
+
+procedure TfrmPedido.btnCarregarClick(Sender: TObject);
+begin
+  BuscarPedido();
+end;
+
+procedure TfrmPedido.AtualizarModoTela;
+begin
+  grpCliente.Enabled := not EmConsulta;
+  grpProduto.Enabled := not EmConsulta;
+  btnGravar.Enabled := not EmConsulta;
+end;
+
 procedure TfrmPedido.ConfigurarGrid;
 begin
   gridItens.Cells[0, 0] := 'Código';
@@ -304,6 +404,9 @@ var
   lIndice: Integer;
   lItem: TPedidoItem;
 begin
+  if EmConsulta then
+    Exit;
+
   lIndice := gridItens.Row - 1;
 
   if (lIndice < 0) or (lIndice >= FPedido.Itens.Count) then
@@ -321,6 +424,11 @@ begin
   edtQuantidade.SetFocus;
 end;
 
+function TfrmPedido.EmConsulta: Boolean;
+begin
+  Result := FPedido.Numero > 0;
+end;
+
 procedure TfrmPedido.edtCodClienteExit(Sender: TObject);
 begin
   BuscarCliente();
@@ -335,6 +443,9 @@ procedure TfrmPedido.ExcluirItem;
 var
   lIndice: Integer;
 begin
+  if EmConsulta then
+    Exit;
+
   lIndice := gridItens.Row - 1;
 
   if (lIndice < 0) or (lIndice >= FPedido.Itens.Count) then
@@ -353,6 +464,21 @@ begin
   AtualizarGrid;
 end;
 
+procedure TfrmPedido.ExibirPedido;
+begin
+  edtNumero.Text := IntToStr(FPedido.Numero);
+  edtDataEmissao.Text := FormatDateTime('dd/mm/yyyy hh:nn', FPedido.DataEmissao);
+
+  edtCodCliente.Text := IntToStr(FPedido.Cliente.Codigo);
+  edtNomeCliente.Text := FPedido.Cliente.Nome;
+  edtCidade.Text := FPedido.Cliente.Cidade;
+  edtUF.Text := FPedido.Cliente.UF;
+
+  LimparProduto;
+  AtualizarGrid;
+  AtualizarModoTela;
+end;
+
 procedure TfrmPedido.FormCreate(Sender: TObject);
 begin
   TConexao.Instance.Connect();
@@ -362,6 +488,7 @@ begin
 
   ConfigurarGrid;
   AtualizarGrid;
+  AtualizarModoTela;
 end;
 
 procedure TfrmPedido.FormDestroy(Sender: TObject);
@@ -424,6 +551,7 @@ begin
   LimparCliente;
   LimparProduto;
   AtualizarGrid;
+  AtualizarModoTela;
 
   if edtCodCliente.CanFocus then
     edtCodCliente.SetFocus;

@@ -28,7 +28,6 @@ object frmPedido: TfrmPedido
       item
         Width = 200
       end>
-    ExplicitTop = 544
   end
   object grpPedido: TGroupBox
     AlignWithMargins = True
@@ -78,6 +77,7 @@ object frmPedido: TfrmPedido
       Height = 25
       Caption = 'Carregar'
       TabOrder = 2
+      OnClick = btnCarregarClick
     end
     object btnCancelar: TButton
       Left = 359
@@ -86,6 +86,7 @@ object frmPedido: TfrmPedido
       Height = 25
       Caption = 'Cancelar'
       TabOrder = 3
+      OnClick = btnCancelarClick
     end
   end
   object grpCliente: TGroupBox
@@ -260,7 +261,6 @@ object frmPedido: TfrmPedido
       Width = 728
       Height = 202
       Align = alClient
-      ColCount = 5
       DefaultRowHeight = 20
       FixedCols = 0
       RowCount = 2
@@ -278,11 +278,10 @@ object frmPedido: TfrmPedido
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 5
-    ExplicitHeight = 70
     object lblTotal: TLabel
       Left = 16
       Top = 8
-      Width = 117
+      Width = 116
       Height = 19
       Caption = 'Total: R$ 0,00'
       Font.Charset = DEFAULT_CHARSET
