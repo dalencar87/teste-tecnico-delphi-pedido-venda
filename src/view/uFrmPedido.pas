@@ -6,7 +6,7 @@ uses
   uPedidoService,
   uPedido,
   Winapi.Windows, Winapi.Messages,
-  System.SysUtils, System.Variants, System.Classes,
+  System.SysUtils, System.Variants, System.Classes, System.Contnrs,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.Grids;
 
@@ -46,6 +46,7 @@ type
     lblTotal: TLabel;
     lblObservacao: TLabel;
     edtObservacao: TEdit;
+    btnNovo: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -56,6 +57,7 @@ type
     procedure gridItensKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnCarregarClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
   private
     FService: TPedidoService;
     FPedido: TPedido;
@@ -184,8 +186,6 @@ begin
       Exit;
     end;
 
-  lNumero := 0;
-
   if FPedido.Numero = 0 then
     FPedido.DataEmissao := Now;
 
@@ -225,7 +225,6 @@ begin
     end;
 
   lCodigo := StrToIntDef(Trim(edtCodCliente.Text), 0);
-  lCliente := nil;
 
   if (lCodigo > 0) and (lCodigo = FPedido.Cliente.Codigo) then
     Exit;
@@ -260,7 +259,6 @@ var
   lPedido: TPedido;
 begin
   lNumero := StrToIntDef(Trim(edtNumero.Text), 0);
-  lPedido := nil;
 
   if lNumero <= 0 then
     begin
@@ -305,7 +303,6 @@ begin
     end;
 
   lCodigo := StrToIntDef(Trim(edtCodProduto.Text), 0);
-  lProduto := nil;
 
   try
     lProduto := FService.BuscarProduto(lCodigo);
@@ -379,6 +376,11 @@ end;
 procedure TfrmPedido.btnCarregarClick(Sender: TObject);
 begin
   BuscarPedido();
+end;
+
+procedure TfrmPedido.btnNovoClick(Sender: TObject);
+begin
+  NovoPedido;
 end;
 
 procedure TfrmPedido.AtualizarModoTela;

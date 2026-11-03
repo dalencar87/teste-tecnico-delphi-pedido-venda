@@ -5,6 +5,7 @@ interface
 uses
   System.Contnrs,
   System.SysUtils,
+  System.Classes,
   uCliente,
   uPedidoItem;
 

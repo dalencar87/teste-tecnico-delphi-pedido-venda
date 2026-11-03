@@ -52,6 +52,13 @@ object frmPedido: TfrmPedido
       Height = 13
       Caption = 'Emiss'#227'o'
     end
+    object lblObservacao: TLabel
+      Left = 440
+      Top = 24
+      Width = 58
+      Height = 13
+      Caption = 'Observa'#231#227'o'
+    end
     object edtNumero: TEdit
       Left = 16
       Top = 43
@@ -87,13 +94,6 @@ object frmPedido: TfrmPedido
       Caption = 'Cancelar'
       TabOrder = 3
       OnClick = btnCancelarClick
-    end
-    object lblObservacao: TLabel
-      Left = 440
-      Top = 24
-      Width = 58
-      Height = 13
-      Caption = 'Observa'#231#227'o'
     end
     object edtObservacao: TEdit
       Left = 440
@@ -314,6 +314,15 @@ object frmPedido: TfrmPedido
       Caption = 'Gravar Pedido'
       TabOrder = 0
       OnClick = btnGravarClick
+    end
+    object btnNovo: TButton
+      Left = 509
+      Top = 0
+      Width = 100
+      Height = 32
+      Caption = 'Novo Pedido'
+      TabOrder = 1
+      OnClick = btnNovoClick
     end
   end
 end
